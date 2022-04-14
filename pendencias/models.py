@@ -8,12 +8,19 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-
-
-
+LISTA_TECNICOS = (
+    ('Davi', 'Davi Lobato'),
+    ('Eduardo', 'Eduardo Palini'),
+    ('Rita', 'Rita dos Santos'),
+    ('Rua', 'Ruã Gonçalves'),
+    ('Tiago', 'Tiago Cerveira'),)
 
 # Create your models here.
 class PendenciaSuporte(models.Model):
+    
+
+    
+
     cidadeslista = (
                 ('DGT Base','DGT Base'),
                 ('Alvorada','Alvorada'),
@@ -92,7 +99,7 @@ class PendenciaSuporte(models.Model):
     descricao = models.CharField("Descricao", max_length=200,blank=False, null=False)
     ocorrencia = models.IntegerField("OC", blank=True, null=True)
     ordem_servico = models.IntegerField("OS", blank=True, null=True)
-    observacao = models.CharField("Observacao", max_length=200,blank=True, null=True)
+    observacao = models.TextField("Observacao", max_length=500,blank=True, null=True)
     status = models.CharField(choices=(
         ('pdgt','Pendente DGT'),
         ('ptp','Pendente Terceiro/Provedor'),
@@ -105,16 +112,20 @@ class PendenciaSuporte(models.Model):
     
     criado_em = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     atualizado_em = models.DateTimeField(blank=True, null=True,auto_now=True)
-    author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    #author = models.ForeignKey('usuário', settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE,)
-    #author = models.ForeignKey('usuário', get_user_model(), null=True, on_delete=models.CASCADE)
+    
+    responsavel = models.CharField(choices=LISTA_TECNICOS, max_length=100, blank=False, null=True)
+ 
+    ##11/01
+    #image = models.ImageField(upload_to='pend_imgs', blank=True)
     
 
-    
+
     class Meta:
         ordering = ['-criado_em'] ###ordenando por criados mais recentes
         verbose_name='pendencia'
         verbose_name_plural='pendencias'
+        
+
           
     def __str__(self):
         """String for representing the Model object."""
